@@ -27,14 +27,14 @@ module.exports = options => {
 
       $beforeInsert(context) {
         const parent = super.$beforeInsert(context);
+        const idColumn = options.field || Model.idColumn;
 
         return Promise.resolve(parent)
           .then(
-            () =>
-              this[options.field] || options.generateGuid.call(this, context)
+            () => this[idColumn] || options.generateGuid.call(this, context)
           )
           .then(guid => {
-            this[options.field] = guid;
+            this[idColumn] = guid;
           });
       }
     };
